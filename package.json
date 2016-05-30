@@ -1,0 +1,26 @@
+{
+  "name": "hubot-combat",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ara-ta3/hubot-combat.git"
+  },
+  "keywords": [
+    "hubot",
+    "node-quest"
+  ],
+  "author": "Arata Tanaka <tarata43@yahoo.co.jp>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ara-ta3/hubot-combat/issues"
+  },
+  "homepage": "https://github.com/ara-ta3/hubot-combat#readme",
+  "dependencies": {
+    "node-quest": "^0.8.3"
+  }
+}
