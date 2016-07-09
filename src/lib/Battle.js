@@ -12,7 +12,7 @@ class Battle {
     attack(actor, target) {
         if (!target) {
             return {
-                messages: [this.messageRepository.getNoTarget(actor)],
+                messages: [this.messageRepository.getNoTarget(target)],
                 result: null
             }
         }
@@ -30,7 +30,7 @@ class Battle {
                 const point = result.attack.value;
                 hit ?
                     messages.push(this.messageRepository.getAttack(actor, target, point)):
-                    messages.push(this.messageRepository.getAttackMiss(target));
+                    messages.push(this.messageRepository.getAttackMiss(actor));
                 target.isDead() && messages.push(this.messageRepository.getAttackDead(target));
                 break;
         }
