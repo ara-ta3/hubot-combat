@@ -1,5 +1,9 @@
 "use strict"
 
+function macroApply(message, map) {
+    return message.replace(/\{(\w+)\}/g, (m, k) => map[k]);
+}
+
 function actorMacroApply(message, actor) {
     return message.replace(/{actor\.name}/g, actor.name);
 }
