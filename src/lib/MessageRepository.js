@@ -26,7 +26,7 @@ function spellMacroApply(message, spellName) {
 }
 
 class MessageRepositoryOnJson {
-    constructor() {
+    constructor(json) {
         this.messages = this.load();
     }
 
