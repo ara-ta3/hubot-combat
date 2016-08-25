@@ -43,8 +43,8 @@ class MessageRepositoryOnJson {
                 dead: "{target.name} is dead"
             },
             attack: {
-                default: "{actor.name} attacks {target.name}",
-                miss: "{actor.name} attacks but missed!",
+                default: "{actor.name} attacks {target.name}!!!",
+                miss: "{actor.name} attacks but missed!!!",
                 dead: "{target.name} died ..."
             },
             spell: {
@@ -82,8 +82,9 @@ class MessageRepositoryOnJson {
     getAttack(actor, target, point) {
         return damagePointMacroApply(
                 targetMacroApply(
-                    actorMacroApply(
-                        `${this.messages.actor.attack.default}\n${this.messages.status.default}`, 
+                    actorMacroApply([
+                        this.messages.attack.default,
+                        this.messages.status.default].join("\n"), 
                         actor
                         ), 
                     target

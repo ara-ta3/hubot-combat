@@ -2,7 +2,15 @@
 
 const NodeQuest = require("node-quest");
 const Battle    = require("./Battle.js");
+const User          = NodeQuest.User;
 const Spell         = NodeQuest.Spell;
+const HitPoint      = NodeQuest.HitPoint;
+const MagicPoint    = NodeQuest.MagicPoint;
+const Equipment     = NodeQuest.Equipment;
+const Parameter     = NodeQuest.Parameter;
+const Weapon        = NodeQuest.Weapon;
+const HitRate       = NodeQuest.HitRate;
+const CureEffect    = NodeQuest.Effect.CureEffect;
 const StatusEffect  = NodeQuest.Effect.StatusEffect;
 const StatusValues  = NodeQuest.StatusValues;
 const priest = new User(
@@ -77,3 +85,5 @@ class Combat {
         return callbackOnMessage(result.messages.join("\n"));
     }
 }
+
+module.exports = Combat;
