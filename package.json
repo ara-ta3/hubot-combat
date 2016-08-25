@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/ara-ta3/hubot-combat#readme",
   "dependencies": {
-    "node-quest": "^0.8.3"
+    "node-quest": "^0.9.6"
   }
 }
