@@ -2,17 +2,19 @@
 
 const NodeQuest  = require("node-quest");
 const UserStates = NodeQuest.UserStates;
+const MessageFormatter  = require("./MessageFormatter");
+const formatter  = new MessageFormatter();
 
 class Battle {
-    constructor(game, messageRepository) {
+    constructor(game, messages) {
         this.game = game;
-        this.messageRepository = messageRepository;
+        this.messages = messages;
     }
 
     attack(actor, target) {
         if (!target) {
             return {
-                messages: [this.messageRepository.getNoTarget(target)],
+                messages: [formatter(this.messages.target.notarget, actor.name, target.name)],
                 result: null
             }
         }
@@ -20,18 +22,19 @@ class Battle {
         let messages = [];
         switch (result) {
             case UserStates.TargetDead:
-                messages.push(this.messageRepository.getTargetDead(target));
+                messages.push(formatter(this.messages.target.dead, actor.name, target.name));
                 break;
             case UserStates.ActorDead:
-                messages.push(this.messageRepository.getActorDead(actor));
+                messages.push(formatter(this.messages.actor.dead, actor.name, target.name));
                 break;
             default:
                 const hit   = result.attack.hit;
                 const point = result.attack.value;
+                messages.push(formatter(this.messages.attack.default, actor.name, target.name));
                 hit ?
-                    messages.push(this.messageRepository.getAttack(actor, target, point)):
-                    messages.push(this.messageRepository.getAttackMiss(actor));
-                target.isDead() && messages.push(this.messageRepository.getAttackDead(target));
+                    messages.push(formatter(this.messages.target.damaged, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max)):
+                    messages.push(formatter(this.messages.attack.miss, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
+                target.isDead() && messages.push(formatter(this.messages.attack.dead, actor.name, target.name));
                 break;
         }
         return {
@@ -48,7 +51,7 @@ class Battle {
             };
         } else if (!target) {
             return {
-                messages: [this.messageRepository.getNoTarget(actor)],
+                messages: [formatter(this.messages.target.notarget, actor.name, target.name)],
                 result: null
             };
         }
@@ -59,28 +62,28 @@ class Battle {
             case UserStates.NoTargetSpell:
                 break;
             case UserStates.NotEnoughMagicPoint:
-                messages.push(this.messageRepository.getNoMagicPoint(actor));
+                messages.push(formatter(this.messages.actor.nomagicpoint));
                 break;
             case UserStates.TargetDead:
-                messages.push(this.messageRepository.getTargetDead(target));
-                break
+                messages.push(formatter(this.messages.target.dead, actor.name, target.name));
+                break;
             case UserStates.ActorDead:
-                    messages.push(this.messageRepository.getActorDead(actor));
-                    break;
+                messages.push(formatter(this.messages.actor.dead, actor.name, target.name));
+                break;
             default:
-                    messages.push(this.messageRepository.getSpellCast(actor, spellName));
-                    if( result.effects.attack !== null ) {
-                        messages.push(this.messageRepository.getTargetDamaged(result.target, result.effects.attack));
-                        result.target.isDead() && messages.push(this.messageRepository.getAttackDead(result.target));
-                    }
-                    const statusEffectResult = result.effects.status.filter((e) => e.effective)
-                        if(result.effects.status.length > 0) {
-                            (statusEffectResult.length > 0) ?
-                                messages.push(this.messageRepository.getRaise(result.target)):
-                                messages.push(this.messageRepository.getActorNoEffect(result.actor));
-                        } else if( result.effects.cure !== null) {
-                            messages.push(this.messageRepository.getCure(result.target));
-                        }
+                messages.push(formatter(this.messages.spell.default, actor.name, null, null, spellName));
+                if( result.effects.attack !== null ) {
+                    messages.push(formatter(this.messages.target.damaged, actor.name, target.name, result.effects.attack, null, target.hitPoint.current, target.hitPoint.max)):
+                        result.target.isDead() && messages.push(formatter(this.messages.attack.dead, actor.name, target.name));
+                }
+                const statusEffectResult = result.effects.status.filter((e) => e.effective)
+                if(result.effects.status.length > 0) {
+                    (statusEffectResult.length > 0) ?
+                        messages.push(formatter(this.messages.raise.default, actor.name, result.target.name)):
+                        messages.push(formatter(this.messages.acrot.noeffect, result.actor.name));
+                } else if( result.effects.cure !== null) {
+                    messages.push(formatter(this.messages.cure.default, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
+                }
         }
         return {
             messages: messages,

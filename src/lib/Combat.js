@@ -25,12 +25,12 @@ const priest = new User(
 );
 
 class Combat {
-    constructor(userRepository, spellRepository, messageRepository) {
+    constructor(userRepository, spellRepository, messages) {
         this.game = new NodeQuest.Game();
         this.userRepository = userRepository;
         this.spellRepository = spellRepository;
         this.messageRepository = messageRepository;
-        this.battle = new Battle(this.game, messageRepository);
+        this.battle = new Battle(this.game, messages);
     }
 
     loadUsers() {

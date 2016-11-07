@@ -8,7 +8,7 @@
 const Combat = require("../lib/Combat.js");
 const UserRepository = require("../lib/UserRepository.js");
 const SpellRepository = require("../lib/SpellRepository.js");
-const MessageRepository = require("../lib/MessageRepository.js");
+const messages = require("../lib/Messages.js");
 
 module.exports = (robot) => {
     const combat = new Combat(
@@ -17,7 +17,7 @@ module.exports = (robot) => {
                 robot.adapter.client ? robot.adapter.client.users : {}
                 ),
             new SpellRepository(null), // TODO getting spells from json
-            new MessageRepository()
+            messages
             );
 
     robot.brain.once("loaded", (data) => combat.loadUsers());
