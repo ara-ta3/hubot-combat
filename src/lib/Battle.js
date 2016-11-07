@@ -14,7 +14,7 @@ class Battle {
     attack(actor, target) {
         if (!target) {
             return {
-                messages: [formatter(this.messages.target.notarget, actor.name, target.name)],
+                messages: [formatter.format(this.messages.target.notarget, actor.name, target.name)],
                 result: null
             }
         }
@@ -22,19 +22,19 @@ class Battle {
         let messages = [];
         switch (result) {
             case UserStates.TargetDead:
-                messages.push(formatter(this.messages.target.dead, actor.name, target.name));
+                messages.push(formatter.format(this.messages.target.dead, actor.name, target.name));
                 break;
             case UserStates.ActorDead:
-                messages.push(formatter(this.messages.actor.dead, actor.name, target.name));
+                messages.push(formatter.format(this.messages.actor.dead, actor.name, target.name));
                 break;
             default:
                 const hit   = result.attack.hit;
                 const point = result.attack.value;
-                messages.push(formatter(this.messages.attack.default, actor.name, target.name));
+                messages.push(formatter.format(this.messages.attack.default, actor.name, target.name));
                 hit ?
-                    messages.push(formatter(this.messages.target.damaged, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max)):
-                    messages.push(formatter(this.messages.attack.miss, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
-                target.isDead() && messages.push(formatter(this.messages.attack.dead, actor.name, target.name));
+                    messages.push(formatter.format(this.messages.target.damaged, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max)):
+                    messages.push(formatter.format(this.messages.attack.miss, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
+                target.isDead() && messages.push(formatter.format(this.messages.attack.dead, actor.name, target.name));
                 break;
         }
         return {
@@ -51,7 +51,7 @@ class Battle {
             };
         } else if (!target) {
             return {
-                messages: [formatter(this.messages.target.notarget, actor.name, target.name)],
+                messages: [formatter.format(this.messages.target.notarget, actor.name, target.name)],
                 result: null
             };
         }
@@ -62,27 +62,27 @@ class Battle {
             case UserStates.NoTargetSpell:
                 break;
             case UserStates.NotEnoughMagicPoint:
-                messages.push(formatter(this.messages.actor.nomagicpoint));
+                messages.push(formatter.format(this.messages.actor.nomagicpoint));
                 break;
             case UserStates.TargetDead:
-                messages.push(formatter(this.messages.target.dead, actor.name, target.name));
+                messages.push(formatter.format(this.messages.target.dead, actor.name, target.name));
                 break;
             case UserStates.ActorDead:
-                messages.push(formatter(this.messages.actor.dead, actor.name, target.name));
+                messages.push(formatter.format(this.messages.actor.dead, actor.name, target.name));
                 break;
             default:
-                messages.push(formatter(this.messages.spell.default, actor.name, null, null, spellName));
+                messages.push(formatter.format(this.messages.spell.default, actor.name, null, null, spellName));
                 if( result.effects.attack !== null ) {
-                    messages.push(formatter(this.messages.target.damaged, actor.name, target.name, result.effects.attack, null, target.hitPoint.current, target.hitPoint.max)):
-                        result.target.isDead() && messages.push(formatter(this.messages.attack.dead, actor.name, target.name));
+                    messages.push(formatter.format(this.messages.target.damaged, actor.name, target.name, result.effects.attack, null, target.hitPoint.current, target.hitPoint.max));
+                        result.target.isDead() && messages.push(formatter.format(this.messages.attack.dead, actor.name, target.name));
                 }
                 const statusEffectResult = result.effects.status.filter((e) => e.effective)
                 if(result.effects.status.length > 0) {
                     (statusEffectResult.length > 0) ?
-                        messages.push(formatter(this.messages.raise.default, actor.name, result.target.name)):
-                        messages.push(formatter(this.messages.acrot.noeffect, result.actor.name));
+                        messages.push(formatter.format(this.messages.raise.default, actor.name, result.target.name)):
+                        messages.push(formatter.format(this.messages.acrot.noeffect, result.actor.name));
                 } else if( result.effects.cure !== null) {
-                    messages.push(formatter(this.messages.cure.default, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
+                    messages.push(formatter.format(this.messages.cure.default, actor.name, target.name, point, null, target.hitPoint.current, target.hitPoint.max));
                 }
         }
         return {

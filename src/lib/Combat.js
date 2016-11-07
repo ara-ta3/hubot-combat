@@ -13,6 +13,9 @@ const HitRate       = NodeQuest.HitRate;
 const CureEffect    = NodeQuest.Effect.CureEffect;
 const StatusEffect  = NodeQuest.Effect.StatusEffect;
 const StatusValues  = NodeQuest.StatusValues;
+const MessageFormatter  = require("./MessageFormatter");
+const formatter  = new MessageFormatter();
+
 const priest = new User(
     0,
     "priest",
@@ -29,8 +32,8 @@ class Combat {
         this.game = new NodeQuest.Game();
         this.userRepository = userRepository;
         this.spellRepository = spellRepository;
-        this.messageRepository = messageRepository;
         this.battle = new Battle(this.game, messages);
+        this.messages = messages;
     }
 
     loadUsers() {
@@ -75,8 +78,8 @@ class Combat {
     statusOfUser(targetName, callbackOnMessage) {
         const target = this.game.findUser(targetName);
         const message = target ?
-            this.messageRepository.getStatus(target):
-            this.messageRepository.getNoTarget(target);
+            formatter.format(this.messages.status.default, null, target.name, 0, null, target.hitPoint.current, target.hitPoint.max, target.magicPoint.current, target.magicPoint.max, ""):
+            formatter.format(this.messages.target.notarget, null, target.name);
         return callbackOnMessage(message);
     }
 
