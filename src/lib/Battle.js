@@ -6,8 +6,7 @@ const MessageFormatter  = require("./MessageFormatter");
 const formatter  = new MessageFormatter();
 
 class Battle {
-    constructor(game, messages) {
-        this.game = game;
+    constructor(messages) {
         this.messages = messages;
     }
 

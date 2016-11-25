@@ -32,7 +32,7 @@ class Combat {
         this.game = new NodeQuest.Game();
         this.userRepository = userRepository;
         this.spellRepository = spellRepository;
-        this.battle = new Battle(this.game, messages);
+        this.battle = new Battle(messages);
         this.messages = messages;
     }
 
