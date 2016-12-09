@@ -27,7 +27,7 @@ describe('Battle', () => {
 
         const battle = new Battle(messages);
         const result = battle.attack(u1, u2);
-        assert.deepEqual(result.messages, [messages.attack.default(u1, u2, 100)]);
+        assert.equal(u2.hitPoint.current, 900);
     })
 
     it("should be failed to attack user when target is dead", () => {
@@ -52,7 +52,8 @@ describe('Battle', () => {
 
         const battle = new Battle(messages);
         const result = battle.attack(u1, u2);
-        assert.deepEqual(result.messages, [messages.target.dead(u2)]);
+
+        assert.equal(u2.hitPoint.current, 0);
     })
 
     it("should be success to cast a spell to user", () => {
@@ -79,10 +80,7 @@ describe('Battle', () => {
         const battle = new Battle(messages);
         const result = battle.cast(u1, u2, "fire");
 
-        assert.deepEqual(result.messages, [
-                messages.spell.cast(u1, "fire"),
-                messages.target.damaged(u2, 105)
-        ]);
+        assert.equal(u2.hitPoint.current, 895);
     })
 });
 
